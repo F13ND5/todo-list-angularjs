@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 interface Task {
+  id: number;
   task: string;
   completed: boolean;
 }
@@ -20,7 +20,7 @@ interface Task {
         <input
           type="text"
           placeholder="Add a new task"
-          (ngModel)="newTask"
+          [(ngModel)]="newTask"
           (keyup.enter)="addTask(newTask)"
           [disabled]="isTaskInputDisabled"
         />
@@ -35,11 +35,13 @@ interface Task {
           <span [class.completed]="task.completed">{{ task.task }}</span>
 
           <!-- Action Buttons -->
-          <button (click)="completeTask(task)" [disabled]="task.completed">
-            Complete
+          <br /><br />
+          <button (click)="toggleTaskCompletion(task)">
+            {{ task.completed ? 'Undo' : 'Complete' }}
           </button>
           <button (click)="editTask(task)">Edit</button>
           <button (click)="deleteTask(task)">Delete</button>
+          <hr />
         </li>
       </ul>
     </div>
@@ -51,6 +53,7 @@ export class AppComponent {
   tasks: Task[] = [];
   newTask: string = ''; // Two-way binding variable for input field
   isTaskInputDisabled: boolean = false; // Disables the input when task is being added
+  taskIdCounter: number = 1; // Keeps track of the next ID to assign
 
   // Method to add a new task
   addTask(task: string): void {
@@ -59,25 +62,34 @@ export class AppComponent {
       return; // Prevent adding empty tasks
     }
 
-    this.tasks.push({ task, completed: false });
+    // Create a new task with an incremented ID
+    this.tasks.push({ id: this.taskIdCounter++, task, completed: false });
     this.newTask = ''; // Clear the input field after adding
   }
 
-  // Method to delete a task
+  // Method to delete a task by ID
   deleteTask(task: Task): void {
-    const index = this.tasks.indexOf(task);
+    // Find the task by ID and remove it from the list
+    const index = this.tasks.findIndex((t) => t.id === task.id);
     if (index > -1) {
       this.tasks.splice(index, 1);
     }
   }
 
-  // Method to mark a task as completed
-  completeTask(task: Task): void {
-    const index = this.tasks.findIndex((t) => t === task);
+  // Method to mark a task as completed or not
+  toggleTaskCompletion(task: Task): void {
+    const index = this.tasks.findIndex((t) => t.id === task.id);
     if (index !== -1) {
-      this.tasks[index].completed = true; // Mark task as completed
+      this.tasks[index].completed = !this.tasks[index].completed; // Toggle task completion
+      // Check if the element exists before trying to access its properties
+      const element = document.getElementById(`${task.id}`);
+      if (element) {
+        element.style.backgroundColor = 'green';
+      }
     }
   }
+
+
 
   // Method to edit a task
   editTask(task: Task): void {
@@ -86,5 +98,4 @@ export class AppComponent {
       task.task = newTaskName.trim(); // Update task name
     }
   }
-
 }
