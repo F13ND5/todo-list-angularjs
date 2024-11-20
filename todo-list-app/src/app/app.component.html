@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Optional, for styling -->
+</head>
+<body>
+  <div class="container">
+    <h1>{{ title }}</h1>
+    
+    <!-- Input and Button for Adding Task -->
+    <div>
+      <input 
+        type="text" 
+        placeholder="Add a new task" 
+        [(ngModel)]="newTask" 
+        (keyup.enter)="addTask(newTask)" 
+        [disabled]="isTaskInputDisabled" />
+      <button (click)="addTask(newTask)" [disabled]="isTaskInputDisabled">Add Task</button>
+    </div>
+
+    <!-- Task List -->
+    <ul id="taskList">
+      <li *ngFor="let task of tasks">
+        <span [class.completed]="task.completed">{{ task.task }}</span>
+
+        <!-- Action Buttons -->
+        <button (click)="completeTask(task)" [disabled]="task.completed">Complete</button>
+        <button (click)="editTask(task)">Edit</button>
+        <button (click)="deleteTask(task)">Delete</button>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

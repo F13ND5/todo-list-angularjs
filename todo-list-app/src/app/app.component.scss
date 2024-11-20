@@ -1,0 +1,36 @@
+/* styles.css or app.component.scss */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  button {
+    margin-left: 10px;
+    padding: 5px 10px;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+  }
+  
+  input {
+    padding: 5px;
+    width: 80%;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 10px 0;
+  }
+  
+  .completed {
+    text-decoration: line-through;
+    color: gray;
+  }
+  
