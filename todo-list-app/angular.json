@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "baseHref": "/todo-list-app/",
             "outputPath": "dist/todo-list-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -78,7 +79,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "todo-list-app:build"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -100,6 +104,9 @@
             ],
             "scripts": []
           }
+        },
+        "deploy" : {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
